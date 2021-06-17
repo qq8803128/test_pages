@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script>
+<script>
+  // VConsole will be exported to `window.VConsole` by default.
+  var vConsole = new window.VConsole();
+</script>
+</head>
+<body>
+<script>
+function getAndroidVersion() {
+    var match = ua.match(/android\s([0-9\.]*)/);
+    return match ? match[1] : false;
+}
+		
+var ua = navigator.userAgent.toLowerCase();
+var noIntentTest = /aliapp|360 aphone|weibo|windvane|ucbrowser/.test(ua);
+
+var hasIntentTest = /chrome|samsung/.test(ua);
+var isAndroid = /android|adr/.test(ua) && !(/windows phone/.test(ua));
+var canIntent = !noIntentTest && hasIntentTest && isAndroid;
+var isChrome = false;
+var isWebview = false;
+
+if (ua.match(/(?:chrome|crios)\/([\d\.]+)/)) {
+    isChrome = true;
+    if (ua.match(/version\/[\d+\.]+\s*chrome/)) {
+        isWebview = true;
+    }
+};
+
+var isOriginalChrome = isAndroid && isChrome && !isWebview;
+if (ua.indexOf('m353')>-1 && !noIntentTest) {
+    canIntent = false;
+}
+
+// 安卓走iframe方式唤起
+if (ua.indexOf('android')>-1 && !noIntentTest) {
+    canIntent = false;
+}
+
+console.log('noIntentTest:' + noIntentTest);
+console.log('hasIntentTest:' + hasIntentTest);
+console.log('isAndroid:' + isAndroid);
+console.log('canIntent:' + canIntent);
+console.log('isChrome:' + isChrome);
+console.log('isWebview:' + isWebview);
+</script>
+</body>
+</html>
